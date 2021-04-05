@@ -1,0 +1,111 @@
+<!DOCTYPE>  
+
+<html lang="es">
+	
+    <head>
+    	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+		<meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+    	<title style="font: consolas;">OnFarma</title>
+    </head>
+
+    <body class="d-grid gap-2">
+
+
+
+    	<header>
+	    	<div class="d-flex justify-content-center p-3 bd-highlight">
+	    		<p class="h1" style="color:#0D6EFD; font-family:Brush Script MT; font-size:555%">OnFarma</p>
+	    	</div>
+			
+			<hr class="container" style="color:#0D6EFD" size="7">
+
+            <nav class="container navbar navbar-expand-lg navbar-light">
+              <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                  <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <form id="finf">
+                        <li class="nav-item">
+                          <input class="nav-link active" type="submit" value="Mi informacion"/>
+                        </li>
+                    </form>
+                    <li class="nav-item">
+                      <a class="nav-link active" aria-current="page" href="onIndex.html">Pagina de contacto</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </nav>
+    	
+    	</header>
+
+        
+        <div  class="d-flex justify-content-center">
+            <div id ="aqui" class="container row align-items-start gap-4">
+                
+            </div>
+        </div>
+
+			<!-- Esta unicamente para que haya un espacio al final de la página-->
+        <hr size="0">
+
+
+    </body>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous">
+	</script>
+
+    <script>  
+
+        const is = document.getElementById("finf");
+        
+        is.addEventListener("submit", function(event){
+            
+            console.log("hola");
+            event.preventDefault();
+            let usuario_temp=JSON.parse(localStorage.getItem("usuario"));
+            fetch(`http://localhost:8080/applicationlawrence/api/contact?correo=${usuario_temp.correo}`, {
+                headers: {
+                    Accept: 'application/json'
+                },
+                method: 'POST'
+                })
+                .then(res => {
+                //recibo el correo que he pasado
+                  return res.text();
+                    console.log(res + "data");
+                })
+                .then(data=>{
+                    console.log(data + "data 2");
+                    mostrarInfo(data, usuario_temp);
+                    })
+                .catch(e => {
+                    console.error("Error" + e)
+                })     
+            })       
+
+            function mostrarInfo(data, usuario){
+                console.log(data);
+                let html=        `<div class="card border-dark" style="width: 27rem;">`
+                                +`<img src="" "class="card-img-top">`
+                                +`<div class="card-body">`
+                                +  `  <h5 class="card-title"> Informacion sobre mi cuenta</h5>`
+                                + `   <p class="card-text"> Nombre: ${usuario.nombre} </p>`
+                                + `   <p class="card-text"> Apellidos: ${usuario.apellido} </p>`
+                                + `   <p class="card-text"> Edad: ${usuario.edad} </p>`
+                                + `   <p class="card-text"> Correo: ${usuario.correo} </p>`
+                                + `   <p class="card-text"> Clave: ${usuario.clave} </p>`
+                                + `   <a class="btn btn-outline-primary btn-sm">Modificar informacion</a>`
+                                +`</div>`
+                            +`</div>`
+                
+                document.getElementById("aqui").innerHTML = html;
+            } 
+
+    </script>
+
+	
+</html>
