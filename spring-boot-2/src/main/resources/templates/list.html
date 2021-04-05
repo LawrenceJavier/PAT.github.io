@@ -1,9 +1,0 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<body>
-	<select>
-		<option th:each="user : ${users}" th:value="${user.username}"
-			th:text="${user.username}"></option>
-	</select>
-</body>
-</html>
